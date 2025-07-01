@@ -1,0 +1,87 @@
+{% extends "edit_task_layout.html" %}
+
+{% block title %}EDIT RECURRING TASK{% endblock %}
+
+{% block main %}
+<!-- Category Selection -->
+<div class="d-flex justify-content-center">
+  <div class="card shadow p-4 w-100" style="max-width: 500px;">
+    <h4 class="text-center mb-4 text-primary">
+      <i class="fas fa-sync-alt me-2"></i>Edit Recurring Task - Step 1
+    </h4>
+    <form method="POST" action="/edit_recur_task">
+      <div class="mb-3">
+        <label>Select Category:</label>
+        <select name="cat" class="form-select" required>
+          <option disabled selected value="">Select Category</option>
+          {% for cat in category_all %}
+            <option value="{{ cat }}" {% if cat == selected_cat %}selected{% endif %}>{{ cat }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Select</button>
+    </form>
+  </div>
+</div>
+
+{% if selected_cat %}
+<!-- Task Selection -->
+<div class="d-flex justify-content-center mt-4">
+  <div class="card shadow p-4 w-100" style="max-width: 500px;">
+    <h4 class="text-center mb-4 text-primary">
+      <i class="fas fa-tasks me-2"></i>Edit Recurring Task - Step 2
+    </h4>
+    <form method="POST" action="/edit_recur_task">
+      <input type="hidden" name="cat" value="{{ selected_cat }}">
+      <div class="mb-3">
+        <label>Select Task:</label>
+        <select name="t" class="form-select" required>
+          <option disabled selected value="">Select Task</option>
+          {% for t in tasks_all %}
+            <option value="{{ t }}" {% if t == selected_task %}selected{% endif %}>{{ t }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Select</button>
+    </form>
+  </div>
+</div>
+{% endif %}
+
+{% if selected_task %}
+<!-- Update Status -->
+<div class="d-flex justify-content-center mt-4">
+  <div class="card shadow p-4 w-100" style="max-width: 500px;">
+    <h4 class="text-center mb-4 text-success">
+      <i class="fas fa-edit me-2"></i>Update Status
+    </h4>
+    <form method="POST" action="/edit_recur_task">
+      <input type="hidden" name="cat" value="{{ selected_cat }}">
+      <input type="hidden" name="t" value="{{ selected_task }}">
+      <div class="mb-3">
+        <label>Status:</label>
+        <select name="s" class="form-select" required>
+          {% for s in TASK_STATUS %}
+            <option value="{{ s }}" {% if s == selected_status %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-success">Update Status</button>
+    </form>
+  </div>
+</div>
+{% endif %}
+
+{% if status_msg %}
+<div class="d-flex justify-content-center mt-3">
+  <div class="alert alert-success w-100" style="max-width: 500px;">{{ status_msg }}</div>
+</div>
+{% endif %}
+
+{% if apology %}
+<div class="d-flex justify-content-center mt-3">
+  <div class="alert alert-danger w-100" style="max-width: 500px;">{{ apology }}</div>
+</div>
+{% endif %}
+
+{% endblock %}

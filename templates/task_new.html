@@ -1,0 +1,55 @@
+{% extends "edit_task_layout.html" %}
+
+{% block title %}
+    ADD TASK
+{% endblock %}
+
+{% block main %}
+<div class="d-flex justify-content-center">
+    <div class="card shadow p-4 w-100" style="max-width: 500px;">
+        <h4 class="text-center mb-4 text-primary">
+            <i class="fas fa-plus-circle me-2"></i>Add New Task
+        </h4>
+
+        <form action="/add_task" method="post">
+            <div class="mb-3">
+                <input autocomplete="off" class="form-control" autofocus name="task" placeholder="Task Name" maxlength="30" required>
+            </div>
+
+            <div class="mb-3">
+                <select class="form-select" name="category">
+                    <option disabled selected value="">Select Category</option>
+                    {% for cat in category_all %}
+                    <option value="{{ cat }}">{{ cat }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Target Date (Optional)</label>
+                <div class="d-flex gap-2">
+                    <input autocomplete="off" class="form-control" name="Target_Day" placeholder="{{ today.day }}" type="number" max="31" min="1">
+                    <select class="form-select" name="Target_Month">
+                        <option disabled selected value="{{ today.month }}">{{ month[today.month] }}</option>
+                        {% for m in month %}
+                        <option value="{{ m }}">{{ month[m] }}</option>
+                        {% endfor %}
+                    </select>
+                    <input autocomplete="off" class="form-control" name="Target_Year" placeholder="{{ today.year }}" type="number" min="{{ today.year }}" max="2100">
+                </div>
+                <small class="text-muted">Leave empty if the day, month, or year is same as current.</small>
+            </div>
+
+            {% if apology %}
+            <div class="alert alert-danger py-2" role="alert">
+                {{ apology }}
+            </div>
+            {% endif %}
+
+            <div class="d-grid">
+                <button class="btn btn-success" type="submit">Add Task</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "tasks_layout.html" %}
+
+{% block title %}
+    TASKS RECURRING ALL
+{% endblock %}
+
+{% block info %}
+    <a href="/add_category" class="btn btn-primary text-decoration-none mx-4">
+        <i class="fas fa-plus-circle me-2"></i> Add Category
+    </a>
+    <a href="/del_category" class="btn btn-danger text-decoration-none mx-4">
+        <i class="fas fa-trash-alt me-2"></i> Delete Category
+    </a>
+    <a href="/add_re_task" class="btn btn-primary text-decoration-none mx-4">
+        <i class="fas fa-sync-alt me-2"></i> Add Recurring Task
+    </a>
+    <a href="/edit_recur_task" class="btn btn-success text-decoration-none mx-4">
+        <i class="fas fa-edit me-2"></i> Edit Recurring Task
+    </a>
+{% endblock %}
+
+{% block main %}
+    <div>
+        <p>{{ apology }}</p>
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Task Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Time Period</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Streak Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in tasks_all %}
+                <tr>
+                    <td>{{ t.task }}</td>
+                    <td>{{ t.category }}</td>
+                    <td>{{ t.start_at }} to {{ t.end_at }}</td>
+                    <td>{{ t.type }}</td>
+                    <td>{{ t.streak_count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

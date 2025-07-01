@@ -1,0 +1,64 @@
+{% extends "edit_task_layout.html" %}
+
+{% block title %}
+    DELETE TASK
+{% endblock %}
+
+{% block main %}
+<!-- First form: Select category -->
+<div class="d-flex justify-content-center">
+    <div class="card shadow p-4 w-100" style="max-width: 500px;">
+      <h4 class="text-center mb-4 text-primary">
+        <i class="fas fa-check-circle me-2"></i>Confirm Category
+      </h4>
+      <form action="/del_task" method="post">
+        <div class="mb-3">
+          <label>Select Category:</label>
+          <select name="cat" class="form-select" required>
+            <option disabled selected value="">Category</option>
+            {% for cat in category_all %}
+              <option value="{{ cat }}">{{ cat }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button class="btn btn-primary" type="submit">Confirm Category</button>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Second form: Select task to delete -->
+  {% if tasks_all %}
+  <div class="d-flex justify-content-center mt-4">
+    <div class="card shadow p-4 w-100" style="max-width: 500px;">
+      <h4 class="text-center mb-4 text-danger">
+        <i class="fas fa-trash-alt me-2"></i>Delete Task
+      </h4>
+      <form action="/del_task" method="post">
+        <input type="hidden" name="cat" value="{{ selected_cat }}">
+        <div class="mb-3">
+          <label>Select Task:</label>
+          <select name="t" class="form-select" required>
+            <option disabled selected value="">Task</option>
+            {% for task in tasks_all %}
+              <option value="{{ task }}">{{ task }}</option>
+            {% endfor %}
+          </select>
+        </div>
+  
+        {% if apology %}
+          <div class="alert alert-warning" role="alert">{{ apology }}</div>
+        {% endif %}
+  
+        {% if status %}
+          <div class="alert alert-success" role="alert">{{ status }}</div>
+        {% endif %}
+  
+        <button class="btn btn-danger" type="submit">
+          <i class="fas fa-trash me-2"></i>DELETE TASK
+        </button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+  
+{% endblock %}

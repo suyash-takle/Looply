@@ -1,0 +1,111 @@
+{% extends "edit_task_layout.html" %}
+
+{% block title %}EDIT TASK{% endblock %}
+
+{% block main %}
+<!-- Step 1: choose category -->
+<div class="d-flex justify-content-center">
+  <div class="card shadow p-4 w-100" style="max-width: 500px;">
+    <h4 class="text-center mb-4 text-primary">
+      <i class="fas fa-check-circle me-2"></i>Confirm Category
+    </h4>
+    <form action="/edit_task" method="post">
+      <div class="mb-3">
+        <label>Select Category:</label>
+        <select name="cat" class="form-select" required>
+          <option disabled selected value="">Category</option>
+          {% for cat in category_all %}
+            <option value="{{ cat }}" {% if cat == selected_cat %}selected{% endif %}>{{ cat }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button class="btn btn-primary" type="submit">
+        <i class="fas fa-check-circle me-2"></i> Confirm Category
+      </button>
+      {% if apology %}
+        <div class="alert alert-warning mt-3" role="alert">{{ apology }}</div>
+      {% endif %}
+    </form>
+  </div>
+</div>
+
+{% if tasks_all %}
+<!-- Step 2: choose task -->
+<div class="d-flex justify-content-center mt-4">
+  <div class="card shadow p-4 w-100" style="max-width: 500px;">
+    <h4 class="text-center mb-4 text-primary">
+      <i class="fas fa-check-circle me-2"></i>Confirm Task
+    </h4>
+    <form action="/edit_task" method="post">
+      <input type="hidden" name="cat" value="{{ selected_cat }}">
+      <div class="mb-3">
+        <label>Select Task:</label>
+        <select name="t" class="form-select" required>
+          <option disabled selected value="">Task</option>
+          {% for t in tasks_all %}
+            <option value="{{ t }}" {% if t == selected_task %}selected{% endif %}>{{ t }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button class="btn btn-primary" type="submit">
+        <i class="fas fa-check-circle me-2"></i> Confirm Task
+      </button>
+      {% if apology %}
+        <div class="alert alert-warning mt-3" role="alert">{{ apology }}</div>
+      {% endif %}
+    </form>
+  </div>
+</div>
+{% endif %}
+
+{% if status %}
+<!-- Step 3: edit status and optional date -->
+<div class="d-flex justify-content-center mt-4">
+  <div class="card shadow p-4 w-100" style="max-width: 500px;">
+    <h4 class="text-center mb-4 text-primary">
+      <i class="fas fa-edit me-2"></i>Edit Task
+    </h4>
+    <form action="/edit_task" method="post">
+      <input type="hidden" name="cat" value="{{ selected_cat }}">
+      <input type="hidden" name="t" value="{{ selected_task }}">
+
+      <div class="mb-3">
+        <label>Select New Status:</label>
+        <select name="s" class="form-select" required>
+          {% for st in TASK_STATUS %}
+            <option value="{{ st }}" {% if st == selected_status %}selected{% endif %}>{{ st }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <p>Current target: <strong>{{ existing_target }}</strong></p>
+        <p>Edit Target Date (leave blank to keep current):</p>
+        <div class="d-flex gap-2">
+            <input autocomplete="off" class="form-control" name="Target_Day" placeholder="{{ today.day }}" type="number" max="31" min="1">
+            <select class="form-select" name="Target_Month">
+                <option disabled selected value="{{ today.month }}">{{ month[today.month] }}</option>
+                {% for m in month %}
+                <option value="{{ m }}">{{ month[m] }}</option>
+                {% endfor %}
+            </select>
+            <input autocomplete="off" class="form-control" name="Target_Year" placeholder="{{ today.year }}" type="number" min="{{ today.year }}" max="2100">
+        </div>
+        <small class="text-muted">Leave empty if the day, month, or year is same as current.</small>
+    </div>
+
+      {% if apology %}
+        <div class="alert alert-warning" role="alert">{{ apology }}</div>
+      {% endif %}
+      {% if status_msg %}
+        <div class="alert alert-success" role="alert">{{ status_msg }}</div>
+      {% endif %}
+
+      <button class="btn btn-success" type="submit">
+        <i class="fas fa-edit me-2"></i> Update Task
+      </button>
+    </form>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
